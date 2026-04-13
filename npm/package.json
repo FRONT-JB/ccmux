@@ -1,6 +1,6 @@
 {
   "name": "ccmux",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Claude Code Multiplexer — manage multiple Claude Code instances in TUI split panes",
   "bin": {
     "ccmux": "bin/cli.js"
