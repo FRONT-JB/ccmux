@@ -22,7 +22,13 @@ A lightweight terminal multiplexer built specifically for running multiple [Clau
 
 ## Install
 
-### Download binary (recommended)
+### Via npm (recommended)
+
+```bash
+npm install -g @shincode/ccmux
+```
+
+### Download binary
 
 Download the latest binary from [Releases](https://github.com/Shin-sibainu/ccmux/releases):
 

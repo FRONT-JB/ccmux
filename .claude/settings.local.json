@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo build:*)",
+      "Bash(cargo search:*)",
+      "Bash(grep -r \"pub fn\" target/debug/.fingerprint/vt100-*/lib-vt100-*.json)",
+      "Bash(cargo doc:*)",
+      "Bash(grep -rn \"pub fn\" \"C:/Users/じゅぶ/Desktop/dev/my-own-project/ccmux/target/debug/build/vt100\"-*/out/)",
+      "Read(//c/Users/じゅぶ/.cargo/registry/src/**)",
+      "Bash(grep -n \"pub fn\\\\|pub struct\" ~/.cargo/registry/src/*/vt100-0.16.*/src/lib.rs)",
+      "Bash(grep -n \"pub fn\\\\|pub struct\\\\|pub enum\" ~/.cargo/registry/src/*/vt100-0.16.*/src/parser.rs)",
+      "Bash(cargo test:*)",
+      "Bash(grep -n \"pub fn new\\\\|pub fn default\\\\|fn default\\\\|env\\\\|args\\\\|program\" ~/.cargo/registry/src/*/portable-pty-0.8.*/src/cmdbuilder.rs)",
+      "Bash(claude --version)",
+      "Bash('C:/Program Files/Git/bin/bash.exe' -c 'echo \"SHELL=$SHELL, BASH_VERSION=$BASH_VERSION, PATH_has_local=$\\(echo $PATH | grep -c \".local/bin\"\\)\"')",
+      "Bash(wc -l src/*.rs)",
+      "Bash(cargo check:*)",
+      "Bash(grep:*)",
+      "Bash(ls ~/.cargo/registry/src/*/syntect-5.*/assets/default_newlines.packdump)",
+      "Bash(gh repo:*)",
+      "Bash(sed -i 's/app\\\\.dragging\\\\.or\\(app\\\\.hover_border\\)/app.dragging.as_ref\\(\\).or\\(app.hover_border.as_ref\\(\\)\\)/g' src/ui.rs)",
+      "Bash(sed -i 's/let old_hover = self\\\\.hover_border;/let old_hover = self.hover_border.clone\\(\\);/g' src/app.rs)",
+      "Bash(cargo clippy:*)",
+      "Bash(gh pr create --title 'UI redesign, Claude detection, and release prep' --body ':*)",
+      "Bash(gh pr:*)",
+      "Bash(npm -v)",
+      "Bash(mkdir -p \"C:/Users/じゅぶ/Desktop/dev/my-own-project/ccmux/docs\")",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}
