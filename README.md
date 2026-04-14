@@ -25,7 +25,7 @@ A lightweight terminal multiplexer built specifically for running multiple [Clau
 ### Via npm (recommended)
 
 ```bash
-npm install -g @shincode/ccmux
+npm install -g ccmux-cli
 ```
 
 ### Download binary

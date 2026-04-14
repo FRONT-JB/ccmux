@@ -5,7 +5,7 @@ Claude Code Multiplexer — manage multiple Claude Code instances in TUI split p
 ## Install
 
 ```bash
-npm install -g @shincode/ccmux
+npm install -g ccmux-cli
 ```
 
 ## Usage

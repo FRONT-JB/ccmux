@@ -9,7 +9,7 @@ const binaryName = isWindows ? 'ccmux.exe' : 'ccmux';
 const binaryPath = path.join(__dirname, binaryName);
 
 if (!fs.existsSync(binaryPath)) {
-  console.error('ccmux binary not found. Try reinstalling: npm install -g @shincode/ccmux');
+  console.error('ccmux binary not found. Try reinstalling: npm install -g ccmux-cli');
   process.exit(1);
 }
 
