@@ -846,9 +846,9 @@ fn render_status_bar(app: &App, frame: &mut Frame, area: Rect) {
         ]),
         FocusTarget::Pane => Line::from(vec![
             Span::styled(" ^D", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 세로분할  ", Style::default().fg(TEXT_DIM)),
-            Span::styled("^E", Style::default().fg(ACCENT_BLUE)),
             Span::styled(" 가로분할  ", Style::default().fg(TEXT_DIM)),
+            Span::styled("^E", Style::default().fg(ACCENT_BLUE)),
+            Span::styled(" 세로분할  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^W", Style::default().fg(ACCENT_BLUE)),
             Span::styled(" 닫기  ", Style::default().fg(TEXT_DIM)),
             Span::styled("A-T", Style::default().fg(ACCENT_BLUE)),
