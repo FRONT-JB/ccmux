@@ -1,35 +1,35 @@
 # ccmux
 
-Claude Code Multiplexer — manage multiple Claude Code instances in TUI split panes.
+Claude Code Multiplexer — TUI 분할 창에서 여러 Claude Code 인스턴스를 관리합니다.
 
-## Install
+## 설치
 
 ```bash
 npm install -g ccmux-cli
 ```
 
-## Usage
+## 사용법
 
 ```bash
-ccmux                    # Launch in current directory
-ccmux /path/to/project   # Launch in specified directory
+ccmux                    # 현재 디렉터리에서 실행
+ccmux /path/to/project   # 지정한 디렉터리에서 실행
 ```
 
-## Features
+## 기능
 
-- Multi-pane terminal splits (vertical/horizontal)
-- File tree sidebar with syntax-highlighted preview
-- Tab workspaces
-- Claude Code auto-detection (pane border turns orange)
-- Mouse support (click, drag resize, text selection)
-- Terminal scrollback (10,000 lines)
-- Cross-platform (Windows, macOS, Linux)
+- 다중 창 터미널 분할 (세로/가로)
+- 문법 강조 미리보기가 있는 파일 트리 사이드바
+- 탭 워크스페이스
+- Claude Code 자동 감지 (실행 중일 때 창 테두리가 주황색으로 변경)
+- 마우스 지원 (클릭, 드래그 크기 조정, 텍스트 선택)
+- 터미널 스크롤백 (10,000줄)
+- 크로스 플랫폼 (Windows, macOS, Linux)
 
-## Documentation
+## 문서
 
-- [Docs](https://shin-sibainu.github.io/ccmux/)
+- [문서](https://shin-sibainu.github.io/ccmux/)
 - [GitHub](https://github.com/Shin-sibainu/ccmux)
 
-## License
+## 라이선스
 
 MIT
