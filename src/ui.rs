@@ -658,7 +658,7 @@ fn render_preview(app: &App, frame: &mut Frame, area: Rect) {
     frame.render_widget(block, area);
 
     if ws.preview.is_binary {
-        let msg = Paragraph::new("\u{2718} バイナリファイルです")
+        let msg = Paragraph::new("\u{2718} 바이너리 파일입니다")
             .style(Style::default().fg(TEXT_DIM).bg(PANEL_BG));
         frame.render_widget(msg, inner);
         return;
@@ -813,54 +813,54 @@ fn render_status_bar(app: &App, frame: &mut Frame, area: Rect) {
     let hints = if app.rename_input.is_some() {
         Line::from(vec![
             Span::styled(" Enter", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 決定  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 확인  ", Style::default().fg(TEXT_DIM)),
             Span::styled("Esc", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 取消  ", Style::default().fg(TEXT_DIM)),
-            Span::styled("空Enter", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 元に戻す", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 취소  ", Style::default().fg(TEXT_DIM)),
+            Span::styled("빈Enter", Style::default().fg(ACCENT_BLUE)),
+            Span::styled(" 되돌리기", Style::default().fg(TEXT_DIM)),
         ])
     } else { match focus {
         FocusTarget::Preview => Line::from(vec![
             Span::styled(" Scroll", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" スクロール  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 스크롤  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^W", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 閉じる  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 닫기  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^P", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 配置替  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 재배치  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^Q", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 終了", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 종료", Style::default().fg(TEXT_DIM)),
         ]),
         FocusTarget::FileTree => Line::from(vec![
             Span::styled(" j/k", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 移動  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 이동  ", Style::default().fg(TEXT_DIM)),
             Span::styled("Enter", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 開く  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 열기  ", Style::default().fg(TEXT_DIM)),
             Span::styled(".", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 隠しファイル  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 숨김파일  ", Style::default().fg(TEXT_DIM)),
             Span::styled("Esc", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 戻る  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 뒤로  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^F", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 閉じる  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 닫기  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^Q", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 終了", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 종료", Style::default().fg(TEXT_DIM)),
         ]),
         FocusTarget::Pane => Line::from(vec![
             Span::styled(" ^D", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 縦分割  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 세로분할  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^E", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 横分割  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 가로분할  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^W", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 閉じる  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 닫기  ", Style::default().fg(TEXT_DIM)),
             Span::styled("A-T", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 新タブ  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 새탭  ", Style::default().fg(TEXT_DIM)),
             Span::styled("A-R", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" タブ名  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 탭이름  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^F", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" ツリー  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 트리  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^P", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 配置替  ", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 재배치  ", Style::default().fg(TEXT_DIM)),
             Span::styled("^Q", Style::default().fg(ACCENT_BLUE)),
-            Span::styled(" 終了", Style::default().fg(TEXT_DIM)),
+            Span::styled(" 종료", Style::default().fg(TEXT_DIM)),
         ]),
     }};
 

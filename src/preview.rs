@@ -63,19 +63,19 @@ impl Preview {
         let metadata = match std::fs::metadata(path) {
             Ok(m) => m,
             Err(_) => {
-                self.lines = vec!["ファイルを読み込めませんでした".to_string()];
+                self.lines = vec!["파일을 불러올 수 없습니다".to_string()];
                 return;
             }
         };
 
         if !metadata.is_file() {
-            self.lines = vec!["通常ファイルではありません".to_string()];
+            self.lines = vec!["일반 파일이 아닙니다".to_string()];
             return;
         }
 
         if metadata.len() > MAX_FILE_SIZE {
             self.lines = vec![format!(
-                "ファイルが大きすぎます（{:.1}MB > {:.0}MB）",
+                "파일이 너무 큽니다（{:.1}MB > {:.0}MB）",
                 metadata.len() as f64 / 1024.0 / 1024.0,
                 MAX_FILE_SIZE as f64 / 1024.0 / 1024.0
             )];
@@ -98,7 +98,7 @@ impl Preview {
                     .collect();
             }
             Err(_) => {
-                self.lines = vec!["ファイルを読み込めませんでした".to_string()];
+                self.lines = vec!["파일을 불러올 수 없습니다".to_string()];
                 return;
             }
         }

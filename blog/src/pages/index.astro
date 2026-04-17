@@ -10,7 +10,7 @@ const posts = all.sort(
 );
 
 function fmt(date: Date): string {
-  return new Intl.DateTimeFormat('ja-JP', {
+  return new Intl.DateTimeFormat('ko-KR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -18,12 +18,12 @@ function fmt(date: Date): string {
 }
 ---
 
-<BaseLayout title="ccmux blog — 内部構造と使いこなし">
+<BaseLayout title="ccmux blog — 내부 구조와 활용법">
   <section class="intro">
     <h1>ccmux blog</h1>
     <p>
-      ccmux の内部構造・設計判断・機能の使い方を、合間に読める粒度で
-      綴っていくエンジニアブログです。
+      ccmux 의 내부 구조·설계 판단·기능 사용법을 틈틈이 읽을 수 있는 분량으로
+      기록해 나가는 엔지니어 블로그입니다.
     </p>
   </section>
 

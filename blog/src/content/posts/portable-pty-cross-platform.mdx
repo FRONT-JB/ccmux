@@ -1,58 +1,58 @@
 ---
-title: 'Windows でも動く、のタネ明かし'
-description: 'ccmux は単一バイナリで Windows / macOS / Linux どれでも動く。でも「シェルを動かす仕組み」は OS ごとに全然違う。どう隠してるか。'
+title: 'Windows에서도 동작하는 비결'
+description: 'ccmux는 단일 바이너리로 Windows / macOS / Linux 어디서든 동작한다. 하지만 "셸을 실행하는 仕組み"는 OS마다 전혀 다르다. 어떻게 숨기는가.'
 pubDate: 2026-04-09
 tags: ['rust', 'pty', 'cross-platform']
 ---
 
-ccmux は、どの OS でも同じ 2MB のバイナリひとつ。Windows でも WSL なしで動きます。
+ccmux는 어떤 OS에서든 같은 2MB 바이너리 하나. Windows에서도 WSL 없이 동작합니다.
 
-でも実のところ、**シェルと会話する仕組みは OS ごとにてんで違う**んです。そのギャップを何で埋めているかという話。
+하지만 실은, **셸과 대화하는 仕組み는 OS마다 전혀 다릅니다**. 그 간극을 무엇으로 메우는지 이야기합니다.
 
-## 「シェルに会話してもらう」とは
+## "셸과 대화하기"란
 
-`bash` とか `zsh` は、相手が**人間のターミナル**じゃないと察すると挙動を変えます:
+`bash`나 `zsh`는 상대가 **사람의 터미널**이 아니라고 감지하면 동작을 바꿉니다:
 
-- プロンプト (`$ `) を出さなくなる
-- 色を省く
-- 行ごとの入出力を諦めて、全部まとめてしまう
+- 프롬프트 (`$ `)를 출력하지 않는다
+- 색을 생략한다
+- 줄 단위 입출력을 포기하고 전부 묶어버린다
 
-パイプ (`ls | grep foo`) にすると色が消えるの、経験ありませんか？ あれは bash が「相手はターミナルじゃなくてパイプだな」と気づいて、出力の見た目を変えているから。
+파이프 (`ls | grep foo`)를 쓰면 색이 사라지는 경험 있으시죠? 그건 bash가 "상대는 터미널이 아니라 파이프구나"라고 알아채고 출력 형식을 바꾸기 때문입니다.
 
-ccmux のようなツールがシェルを内部で動かす時、シェルにそのことを気づかせずに**「いや、ちゃんとターミナルで動いてるよ」と信じさせる**必要があります。そのための仕組みが **PTY**（pseudo-terminal、擬似端末）。
+ccmux 같은 도구가 셸을 내부에서 실행할 때, 셸이 그걸 눈치채지 못하도록 **"아니, 제대로 터미널에서 실행 중이야"라고 믿게 만드는** 것이 필요합니다. 그를 위한 仕組みが **PTY**（pseudo-terminal, 가상 단말기）입니다.
 
-## OS ごとの実態
+## OS별 실제 구현
 
-PTY の実装は、OS ごとに別物です:
+PTY의 구현은 OS마다 다릅니다:
 
-| OS | 実装 |
+| OS | 구현 |
 |---|---|
 | Linux | `openpty()` + `fork()` + `setsid()` |
-| macOS | 同じような Unix 系 API |
+| macOS | 유사한 Unix 계열 API |
 | Windows 10+ | ConPTY（`CreatePseudoConsole`） |
 
-ConPTY は 2018 年の Windows 10 1809 で追加された、比較的新しい仕組み。それ以前は WinPTY というサードパーティ実装が必要で、この出現が「Windows でも tmux 的なものが作れる」時代を開きました。
+ConPTY는 2018년 Windows 10 1809에서 추가된 비교적 새로운 仕組み입니다. 그 이전에는 WinPTY라는 서드파티 구현이 필요했고, 이것의 등장이 "Windows에서도 tmux 같은 것을 만들 수 있다"는 시대를 열었습니다.
 
-## portable-pty が全部飲み込んでくれる
+## portable-pty가 전부 해결해준다
 
-Rust には [**portable-pty**](https://crates.io/crates/portable-pty) というクレートがあって、OS ごとの差を吸収してくれます。wezterm（Rust 製のターミナルエミュレータ）の作者が作ってるもので、完成度が高い。
+Rust에는 [**portable-pty**](https://crates.io/crates/portable-pty)라는 크레이트가 있어서 OS별 차이를 흡수해줍니다. wezterm（Rust로 만든 터미널 에뮬레이터）의 작자가 만든 것으로, 완성도가 높습니다.
 
-同じ API で、裏では OS ごとに違うものが動きます:
+같은 API로, 내부에서는 OS마다 다른 것이 동작합니다:
 
 ```rust title="src/pane.rs"
 use portable_pty::{native_pty_system, CommandBuilder, PtySize};
 
 fn spawn_shell(rows: u16, cols: u16) -> anyhow::Result<...> {
-    let pty = native_pty_system(); // ← OS を自動判定
+    let pty = native_pty_system(); // ← OS 자동 감지
     let pair = pty.openpty(PtySize { rows, cols, pixel_width: 0, pixel_height: 0 })?;
 
     let shell = detect_shell();
     let mut cmd = CommandBuilder::new(&shell);
     cmd.env("TERM", "xterm-256color");
-    cmd.env("CCMUX", "1"); // ← 後で説明
+    cmd.env("CCMUX", "1"); // ← 나중에 설명
 
     let child = pair.slave.spawn_command(cmd)?;
-    drop(pair.slave); // slave は子プロセスが持つ。親では閉じる。
+    drop(pair.slave); // slave는 자식 프로세스가 갖는다. 부모에서는 닫는다.
 
     let writer = pair.master.take_writer()?;
     let reader = pair.master.try_clone_reader()?;
@@ -61,30 +61,30 @@ fn spawn_shell(rows: u16, cols: u16) -> anyhow::Result<...> {
 }
 ```
 
-`#[cfg(windows)]` も `#[cfg(unix)]` も、一度も書いていません。これがクロスプラットフォームの気持ちよさ。
+`#[cfg(windows)]`도 `#[cfg(unix)]`도 단 한 번도 쓰지 않았습니다. 이게 크로스 플랫폼의 쾌감입니다.
 
-## どのシェルを起動するか
+## 어떤 셸을 실행하는가
 
-ccmux は OS ごとにシェルの優先順位を変えます。
+ccmux는 OS별로 셸 우선순위를 다르게 합니다.
 
 **Windows:**
 
-1. Git Bash (`C:\Program Files\Git\bin\bash.exe`) を最優先
-2. PATH 上の `bash`
-3. 最終手段で PowerShell
+1. Git Bash (`C:\Program Files\Git\bin\bash.exe`) 최우선
+2. PATH 상의 `bash`
+3. 최후 수단으로 PowerShell
 
-Windows で **Git Bash を優先している理由**は、Claude Code を含む多くの Unix 系 CLI が bash 前提に作られているから。PowerShell だと `ls -la` や `grep` がそのまま通らない場面が多くて不便です。
+Windows에서 **Git Bash를 우선하는 이유**는 Claude Code를 포함한 많은 Unix 계열 CLI가 bash를 전제로 만들어져 있기 때문입니다. PowerShell에서는 `ls -la`나 `grep`이 그대로 통하지 않는 경우가 많아 불편합니다.
 
-**Unix系（macOS / Linux）:**
+**Unix 계열（macOS / Linux）:**
 
-1. `$SHELL` 環境変数（ユーザーの普段使いのシェル）
-2. 無ければ `/bin/sh`
+1. `$SHELL` 환경변수（사용자의 평소 셸）
+2. 없으면 `/bin/sh`
 
-## シェルに「今どこにいるか」を聞く小ワザ
+## 셸에 "지금 어디 있나"를 묻는 소기법
 
-シェルで `cd` しても、ccmux からはそのイベントが見えません。シェルは黙って自分の内部状態を変えるだけ。
+셸에서 `cd`를 해도, ccmux에서는 그 이벤트가 보이지 않습니다. 셸은 조용히 자신의 내부 상태만 바꿀 뿐입니다.
 
-そこで**プロンプトが出るたびに、シェル自身から現在のパスを放送してもらう**ように仕込みます:
+그래서 **프롬프트가 나올 때마다 셸 자체가 현재 경로를 알려주도록** 설정합니다:
 
 ```rust
 let setup = " __ccmux_osc7() { \
@@ -95,17 +95,17 @@ clear\n";
 writer.write_all(setup.as_bytes())?;
 ```
 
-`\033]7;file://...\007` は **OSC 7** という特殊なエスケープ。「今いるディレクトリはここ」とターミナルに伝える合言葉です。
+`\033]7;file://...\007`는 **OSC 7**이라는 특수 이스케이프 시퀀스입니다. "지금 있는 디렉터리는 여기"라고 터미널에 전달하는 암호입니다.
 
-ccmux はこれを vt100 パーサで拾って、ペインごとの cwd を最新に保ちます。ファイルツリーや新しいペインの起動ディレクトリが、**自動で「今の場所」**に追従するのはこのおかげ。
+ccmux는 이것을 vt100 파서로 받아서 페인별 cwd를 최신으로 유지합니다. 파일 트리나 새 페인의 시작 디렉터리가 **자동으로 "지금 있는 곳"**을 따라가는 것은 이 덕분입니다.
 
-> ちなみに、setup の先頭に **スペース** を入れているのは、bash の `HISTCONTROL=ignorespace` が効いてる環境で履歴を汚さないため。こういう細かい気遣いが効きます。
+> 참고로 setup 앞에 **공백**을 넣는 것은, bash의 `HISTCONTROL=ignorespace`가 활성화된 환경에서 히스토리를 오염시키지 않기 위함입니다. 이런 세심한 배려가 빛을 발합니다.
 
-## ネストした起動を拒否する
+## 중첩 실행 거부
 
-ccmux の中でさらに ccmux を起動したら、PTY の中で PTY が走ることになって入力が二重処理され、**キー入力が壊れて動かなくなります**。
+ccmux 안에서 다시 ccmux를 실행하면 PTY 안에서 PTY가 돌아 입력이 이중 처리되어 **키 입력이 망가져 동작하지 않게 됩니다**.
 
-これを防ぐため、子シェルに `CCMUX=1` という環境変数を仕込んでおいて、ccmux 自体が起動時にチェックします:
+이를 방지하기 위해 자식 셸에 `CCMUX=1`이라는 환경변수를 심어두고, ccmux 자체가 기동 시에 확인합니다:
 
 ```rust title="src/main.rs"
 if std::env::var("CCMUX").is_ok() {
@@ -114,8 +114,8 @@ if std::env::var("CCMUX").is_ok() {
 }
 ```
 
-「**なぜか動かない**」系のバグを事前に潰せる、地味だけど価値ある一行。
+"**왜인지 동작하지 않는다**" 类の버그를 사전에 차단할 수 있는, 소박하지만 가치 있는 한 줄입니다.
 
 ---
 
-クロスプラットフォームの PTY は普通に書こうとすると `#[cfg(...)]` が大量に出てきて辛いんですが、**portable-pty に任せると一切出てこない**。ccmux が「Windows でも動く」のは、小さいなりにこのクレートの恩恵が大きいです。
+크로스 플랫폼 PTY는 직접 작성하려 하면 `#[cfg(...)]`가 대량으로 나와 힘들지만, **portable-pty에 맡기면 전혀 나오지 않습니다**. ccmux가 "Windows에서도 동작하는" 것은 작은 나름에도 이 크레이트의 혜택이 큽니다.

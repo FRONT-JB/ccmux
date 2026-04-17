@@ -11,7 +11,7 @@ export async function GET(context: APIContext) {
   return rss({
     title: 'ccmux blog',
     description:
-      'ccmux の内部構造・設計判断・機能の使い方を綴るエンジニアブログ。',
+      'ccmux 의 내부 구조·설계 판단·기능 사용법을 기록하는 엔지니어 블로그.',
     site: context.site!,
     items: posts.map((post) => ({
       title: post.data.title,

@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title,
-  description = 'ccmux の内部構造・機能・使いこなしを綴るエンジニアブログ。',
+  description = 'ccmux 의 내부 구조·기능·활용법을 기록하는 엔지니어 블로그.',
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -19,7 +19,7 @@ const github = 'https://github.com/Shin-sibainu/ccmux';
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang="ko">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,7 +27,7 @@ const github = 'https://github.com/Shin-sibainu/ccmux';
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:locale" content="ko_KR" />
     <meta property="og:type" content="website" />
     <link
       rel="alternate"
@@ -63,7 +63,7 @@ const github = 'https://github.com/Shin-sibainu/ccmux';
 
       <footer class="site-footer">
         <a href={landing}>ccmux</a>
-        <a href={docs}>ドキュメント</a>
+        <a href={docs}>문서</a>
         <a href={github} target="_blank" rel="noopener">GitHub</a>
         <a href={`${base}/rss.xml`}>RSS</a>
         <div style="margin-top: 8px; opacity: 0.7;">MIT License</div>

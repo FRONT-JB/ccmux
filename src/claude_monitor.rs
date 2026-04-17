@@ -505,7 +505,7 @@ fn find_jsonl_path(cwd: &Path) -> Option<PathBuf> {
 
 /// Encode a path to Claude's project name format.
 /// Claude Code replaces any character that is not ASCII alphanumeric or `.` with `-`.
-/// E.g.,  `C:\Users\じゅぶ\dev` → `C--Users-----dev`
+/// E.g.,  `C:\Users\홍길동\dev` → `C--Users-----dev`
 fn encode_cwd_to_project_name(cwd: &Path) -> String {
     let s = cwd.to_string_lossy();
     let mut result = String::with_capacity(s.len());
@@ -531,11 +531,11 @@ mod tests {
     }
 
     #[test]
-    fn test_encode_cwd_japanese() {
+    fn test_encode_cwd_korean() {
         // Claude encodes non-ASCII chars as dashes too
-        let path = PathBuf::from("C:\\Users\\じゅぶ\\dev\\ccmux");
+        let path = PathBuf::from("C:\\Users\\홍길동\\dev\\ccmux");
         let encoded = encode_cwd_to_project_name(&path);
-        // C : \ U s e r s \ じ ゅ ぶ \ d e v \ c c m u x
+        // C : \ U s e r s \ 홍 길 동 \ d e v \ c c m u x
         // C - - Users    - - - - dev - ccmux
         assert_eq!(encoded, "C--Users-----dev-ccmux");
     }

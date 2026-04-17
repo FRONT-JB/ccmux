@@ -14,7 +14,7 @@ const { title, description, pubDate, updatedDate, tags } = post.data;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 function fmt(date: Date): string {
-  return new Intl.DateTimeFormat('ja-JP', {
+  return new Intl.DateTimeFormat('ko-KR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -33,7 +33,7 @@ function slugUrl(entry: CollectionEntry<'posts'>): string {
         <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
         {
           updatedDate && (
-            <span>更新 {fmt(updatedDate)}</span>
+            <span>수정 {fmt(updatedDate)}</span>
           )
         }
         {
@@ -54,7 +54,7 @@ function slugUrl(entry: CollectionEntry<'posts'>): string {
       {
         prev ? (
           <a href={slugUrl(prev)}>
-            <span class="nav-label">← 前の記事</span>
+            <span class="nav-label">← 이전 글</span>
             {prev.data.title}
           </a>
         ) : (
@@ -64,7 +64,7 @@ function slugUrl(entry: CollectionEntry<'posts'>): string {
       {
         next ? (
           <a href={slugUrl(next)} style="text-align: right;">
-            <span class="nav-label">次の記事 →</span>
+            <span class="nav-label">다음 글 →</span>
             {next.data.title}
           </a>
         ) : (
